@@ -149,7 +149,7 @@ export default {
   },
   mounted () {
     const itemWidth = parseInt(this.$slots.default[0].elm.offsetWidth)
-    const blankNum = Math.floor(this.$el.offsetWidth / itemWidth)
+    const blankNum = Math.floor(this.$el.offsetWidth / itemWidth) + 1
     for (let i = 0; i < blankNum; i++) {
       this.blankEl.push({
         id: UUID(),

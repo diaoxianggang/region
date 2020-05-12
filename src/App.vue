@@ -2,8 +2,8 @@
   <div class="region-wrapper">
     <bq-region
       ref="region"
-      @regionEnd="selectItem"
-      @selectItem="selectItem"
+      @regionEnd="regionEnd"
+      @regionStart="regionStart"
     >
       <bq-region-item
         v-for="i in grid"
@@ -11,11 +11,14 @@
         :selected-key="i.id"
         border="none"
       >
-        <div style="width: 200px;height: 200px;background-color: #CCC;">
+        <div style="width: 200px;height: 200px;background-color: rgba(136, 244, 255, 0.59);font-size: 32px;text-align: center;line-height: 200px;">
           {{ i.title }}
         </div>
       </bq-region-item>
     </bq-region>
+    <button @click="handleSelectAll">全选</button>
+    <button @click="handleCancelSelect">取消选择</button>
+    <button @click="handleGetSelect">获取选项</button>
   </div>
 </template>
 
@@ -55,107 +58,30 @@ export default {
     }
   },
   methods: {
-    onSelectAllChange (val) {
-      this.selectAll = !this.selectAll
-      this.checkboxLabel = this.selectAll ? '取消全选' : '全选'
-      if (this.selectAll) {
-        this.$refs.region.selectAll()
-      } else {
-        this.$refs.region.clearSelected()
-      }
+    // 点击全选按钮
+    handleSelectAll () {
+      this.$refs.region.selectAll()
     },
+    // 点击取消选择
+    handleCancelSelect () {
+      this.$refs.region.clearSelected()
+    },
+    // 点击获取选贼数据
+    handleGetSelect () {
+      alert(this.getSelectItem())
+    },
+    // 选择开始
+    regionStart () {
+      console.log('选择开始')
+    },
+    // 选择结束
+    regionEnd () {
+      alert(this.getSelectItem())
+    },
+    // 获取选择的数据
     getSelectItem () {
       return this.$refs.region.getSelectItem()
     },
-    clearSelected () {
-      this.$refs.region.clearSelected()
-      this.selectIds = []
-    },
-    selectItem () {
-      const dataLen = this.grid.length
-      this.selectIds = this.getSelectItem()
-      if (this.selectIds.length !== dataLen) {
-        this.selectAll = false
-      } else {
-        this.selectAll = true
-      }
-    }
-  },
-  mounted () {
-    document.addEventListener('click', () => {
-      this.contextMenuVisible = false
-    })
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.service-container{
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  .toolbar {
-    padding: 5px;
-    display: flex;
-    justify-content: space-between;
-    .checkbox {
-      display: flex;
-      align-items: center;
-    }
-  }
-  #gplot {
-    flex: 1;
-    width: 100%;
-  }
-  .region-wrapper {
-    width: 100%;
-    height: calc(100% - 42px);
-    overflow: auto;
-    .context-menu-wrapper {
-      position: absolute;
-      z-index: 1;
-      background-color: #fff;
-      box-shadow: 2px 2px 4px rgba(0, 0, 0, .3);
-      ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        li {
-          padding: 5px 15px;
-          border-top: 1px solid #EEE;
-          &:hover {
-          cursor: pointer;
-            background-color: rgba(162, 204, 253, 0.37)
-          }
-        }
-      }
-    }
-    .footer {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid #EEE;
-    }
-    .add-service-item {
-      cursor: pointer;
-      &:hover {
-        color: #0070cc;
-        box-shadow: 0 0 15px 4px rgb(130, 186, 255) !important;
-        border-color: rgb(130, 186, 255);
-      }
-      .add-service-wrapper {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        text-align: center;
-        font-size: 32px;
-      }
-    }
-  }
-}
-</style>
