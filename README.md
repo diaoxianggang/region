@@ -114,6 +114,8 @@ export default {
 |:-:|:-:|:-:|:-:|
 |regionStart|无|无|选择开始时调用|
 |regionEnd|无|无|选择结束时调用|
+|selectItem|selectKey|无|使用 `Ctrl + 鼠标左键点击` 时调用|
+
 
 ## 方法
 ### Region 选框

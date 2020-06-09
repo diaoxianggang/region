@@ -58,7 +58,7 @@ export default {
     handleClick () {
       if (!this.disabled) {
         this.selected = !this.selected
-        this.$parent.$emit('selectItem')
+        this.$parent.$emit('selectItem', this.selectedKey)
       }
     }
   }
